@@ -22,7 +22,7 @@ Il file di controllo è un file di testo che contiene istruzioni DDL (Data Defin
 
 Esempio di un file di controllo :
 
-![My Image](../images/sqlloader.png)
+![sqlloader](https://github.com/Hispa9/Documentazione/assets/48352386/c62e9fbe-e1f3-4cc7-a871-7530a999eeca)
 
 LOAD DATA : inizio di un nuovo caricamento di dati;
 
