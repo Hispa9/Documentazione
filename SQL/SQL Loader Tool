@@ -74,7 +74,7 @@ sqlldr user/password@\"\(DESCRIPTION=\(ADDRESS=\(PROTOCOL=TCP\)\(Host=10.XXX.XXX
 	- servicename -> 
 	- FILECTL.ctl -> Control file contenente comandi su come riempire tabella
 	- Results.log -> File sulla quale avremo i log
-	- 10000 -> Max righe che usciranno come risultato
+	- 10000 -> il numero di righe che si desidera che SQL*Loader legga dal file di input prima di salvare gli inserimenti nel database. Il salvataggio dei dati è un'operazione costosa. Il valore di ROWS deve essere impostato su un valore sufficientemente elevato in modo che il salvataggio dei dati avvenga ogni 15 minuti o più.
 
 
 Nella sintassi DDL, utilizziamo il carattere di escape "\" quando è necessario usare dei caratteri speciali. 
