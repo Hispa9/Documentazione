@@ -22,7 +22,28 @@ Il file di controllo è un file di testo che contiene istruzioni DDL (Data Defin
 
 Esempio di un file di controllo :
 
-![sqlloader](https://github.com/Hispa9/Documentazione/assets/48352386/c62e9fbe-e1f3-4cc7-a871-7530a999eeca)
+							OPTIONS(SKIP=0,readsize=20971520 )
+							LOAD DATA 
+							INFILE "USVD_SN_dipendenti_*.csv"
+							TRUNCATE
+							INTO TABLE "TIBCOAMX_APP"."ENT_RESPONSABILI_RUO"
+							When colonna16 = 'Staff' AND colonna12 = 'DIRIGENTE POSTE'
+							FIELDS TERMINATED BY';'
+							TRAILING NULLCOLS ( 
+							colonna1 FILLER,
+							COGNOME_RESP char(200),
+							NOME_RESP char(200),
+							colonna4 FILLER,
+							colonna5 FILLER,
+							USERNAME char(200),
+							colonna7 FILLER,
+							colonna8 FILLER,
+							colonna9 FILLER,
+							colonna10 FILLER,
+							EMAIL char(200),
+							STRUTTURA char(200),
+							)
+
 
 LOAD DATA : inizio di un nuovo caricamento di dati;
 
