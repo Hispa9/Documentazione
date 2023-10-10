@@ -25,16 +25,23 @@ Esempio di un file di controllo :
 ![My Image](../images/sqlloader.png)
 
 LOAD DATA : inizio di un nuovo caricamento di dati;
+
 INFILE : specifica il nome di un file di dati contenente i dati che si desidera caricare. Solitamente il file si indica tra apici singoli, ma nel caso in cui si metta un path si usano le virgolette (“”).
-La cosa particolare, in questo caso, è L’asterisco (*) prima del .csv.
-Esso permette di generalizzare il nome del file: se ad esempio si ha l’esigenza di non tener fisso il nome, magari perché con data, in questo caso non si dovrà andare a cambiare ogni volta manualmente. 
-Es. USVD_SN_dipendenti_YYYYMMDD.csv, in questo caso verrà preso correttamente.
+
+			La cosa particolare, in questo caso, è L’asterisco (*) prima del .csv.
+			Esso permette di generalizzare il nome del file: se ad esempio si ha l’esigenza di non tener fisso il nome, magari perché con data, in questo caso non si dovrà andare a cambiare ogni volta manualmente. 
+			Es. USVD_SN_dipendenti_YYYYMMDD.csv, in questo caso verrà preso correttamente.
+
 TRUNCATE: elimina in modo rapido ed efficiente tutte le righe da una tabella o da un cluster per ottenere le migliori prestazioni possibili. Si può, insomma, specificare un metodo di caricamento per la tabella ( INSERT, APPEND, REPLACE o TRUNCATE). Questo sovrascrive il metodo di caricamento della tabella globale, che è INSERT.
-o	APPEND: lo usiamo se la tabella è già piena e vogliamo appendere i nuovi record inseriti ai precedenti.
-o	REPLACE: vengono eliminate tutte le righe all’interno della tabella e caricati i nuovi dati. 
+			o	APPEND: lo usiamo se la tabella è già piena e vogliamo appendere i nuovi record inseriti ai precedenti.
+			o	REPLACE: vengono eliminate tutte le righe all’interno della tabella e caricati i nuovi dati. 
+
 INTO TABLE: indica la tabella entro cui stiamo inserendo i dati.
+
 WHEN : clausola che specifica una o più condizioni. Uno dei problemi di questo tool è che purtroppo non si possono utilizzare where clause molto complesse; non si può ad esempio, usare la OR (solo la AND) né il LIKE.
+
 FIELDS TERMINATED BY ‘;’ : indica come sono separati i campi all’interno del csv.
+
 TRAILING NULLCOLS : 
 
 
