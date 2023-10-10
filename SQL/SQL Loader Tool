@@ -19,9 +19,11 @@ Il file di controllo è un file di testo che contiene istruzioni DDL (Data Defin
 - Come verrà configurato SQL Loader (gestione della memoria, rifiuto dei record, gestione del caricamento interrotto e così via) durante il caricamento dei dati
 - Come SQL Loader manipolerà i dati caricati
 
+
+Esempio di un file di controllo :
+
 ![My Image](../images/sqlloader.png)
 
-Esempio di un file di controllo qui a destra :
 LOAD DATA : inizio di un nuovo caricamento di dati;
 INFILE : specifica il nome di un file di dati contenente i dati che si desidera caricare. Solitamente il file si indica tra apici singoli, ma nel caso in cui si metta un path si usano le virgolette (“”).
 La cosa particolare, in questo caso, è L’asterisco (*) prima del .csv.
