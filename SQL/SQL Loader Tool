@@ -27,7 +27,7 @@ Esempio di un file di controllo :
 							INFILE "dipendenti_*.csv"
 							TRUNCATE
 							INTO TABLE "schema"."RESPONSABILI"
-							When colonna16 = 'Staff' AND colonna12 = 'DIRIGENTE POSTE'
+							When colonna16 = 'Staff' AND colonna12 = 'DIRIGENTE'
 							FIELDS TERMINATED BY';'
 							TRAILING NULLCOLS ( 
 							colonna1 FILLER,
