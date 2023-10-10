@@ -24,9 +24,9 @@ Esempio di un file di controllo :
 
 							OPTIONS(SKIP=0,readsize=20971520 )
 							LOAD DATA 
-							INFILE "USVD_SN_dipendenti_*.csv"
+							INFILE "dipendenti_*.csv"
 							TRUNCATE
-							INTO TABLE "TIBCOAMX_APP"."ENT_RESPONSABILI_RUO"
+							INTO TABLE "schema"."RESPONSABILI"
 							When colonna16 = 'Staff' AND colonna12 = 'DIRIGENTE POSTE'
 							FIELDS TERMINATED BY';'
 							TRAILING NULLCOLS ( 
@@ -51,7 +51,7 @@ INFILE : specifica il nome di un file di dati contenente i dati che si desidera 
 
 			La cosa particolare, in questo caso, è L’asterisco (*) prima del .csv.
 			Esso permette di generalizzare il nome del file: se ad esempio si ha l’esigenza di non tener fisso il nome, magari perché con data, in questo caso non si dovrà andare a cambiare ogni volta manualmente. 
-			Es. USVD_SN_dipendenti_YYYYMMDD.csv, in questo caso verrà preso correttamente.
+			Es. dipendenti_YYYYMMDD.csv, in questo caso verrà preso correttamente.
 
 TRUNCATE: elimina in modo rapido ed efficiente tutte le righe da una tabella o da un cluster per ottenere le migliori prestazioni possibili. Si può, insomma, specificare un metodo di caricamento per la tabella ( INSERT, APPEND, REPLACE o TRUNCATE). Questo sovrascrive il metodo di caricamento della tabella globale, che è INSERT.
 			o	APPEND: lo usiamo se la tabella è già piena e vogliamo appendere i nuovi record inseriti ai precedenti.
