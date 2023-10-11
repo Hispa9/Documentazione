@@ -63,7 +63,16 @@ WHEN : clausola che specifica una o più condizioni. Uno dei problemi di questo 
 
 FIELDS TERMINATED BY ‘;’ : indica come sono separati i campi all’interno del csv.
 
-TRAILING NULLCOLS : 
+TRAILING NULLCOLS : clausola che indica al tool di considerare ogni colonna che non è presente nel record, come null e quindi non va in errore.
+
+ 
+
+I campi elencati all’interno delle parentesi tonde sono tutti del csv; in questo caso, vi è l’esigenza di non importare ogni colonna del csv nella nostra tabella ed è per questo che troviamo dei campi chiamati “colonnaX” con accanto scritto **FILLER.**
+
+Quest’ultima keyword indica che il campo in questione non deve essere preso in considerazione durante l’import.
+
+I campi che invece a noi interessa importare, sono quelli che hanno il nome che coincide con quello nella tabella su cui stiamo importando i dati (esempio: EMAIL , STRUTTURA).
+
 
 
 3.	Lanciare i comandi
