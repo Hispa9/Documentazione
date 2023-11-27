@@ -42,6 +42,10 @@ SELECT DISTINCT va.luogo FROM V_MV_REPORT_DINAMICI va;
 SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
 ```
 
+
+
+
+
 ## Viste vs Viste Materializzate
 
 Le viste sono una specie di tabelle virtuali; hanno anche righe e colonne come si trovano in una tabella reale nel database. 
@@ -68,6 +72,10 @@ Può capitare che le modifiche effettuate sulle tabelle o vista sulla quale si a
 
 **CALL** DBMS_MVIEW.REFRESH('nome_schema.nome_vista_materializzata','');
 
+
+
+
+
 ## Procedure vs Funzioni
 
 Mentre una procedura è un blocco PL/SQL denominato che esegue una o più azioni, una funzione è un blocco PL/SQL denominato che restituisce un valore.
@@ -89,6 +97,10 @@ A cosa può essere utile avere una tabella come tipo di ritorno?
 Immagina ci sia l’esigenza di avere uno script che, in base all’input, esegue una logica dalla quale come output deve ottenere una lista di oggetti, che in SQL non sono altro che righe di una tabella.
 
 Esempio. In base all’oggetto che passo in input, ci sono una serie di doc che devono essere inviati, ma quali? In base alla logica nella funzione, essa salverà i doc che ci interessa inviare nella tabella creata con TYPE. Dato che la funzione ha quella tabella come ritorno, in output avremo ciò che la essa contiene.
+
+
+
+
 
 ## Collezioni e Type in Oracle
 
@@ -141,11 +153,13 @@ N4M_DOC_TABLE inizialmente non ha un’instanza, non ha memoria allocata, ma ass
 
 Come inizializziamo e riempiamo la N4M_DOC_TABLE all’interno di una function?
 
+
 ### **Inizializzazione delle raccolte**
 
 Quando lavori con tabelle nidificate e varray, devi *inizializzare* la variabile di raccolta prima di poterla utilizzare. Puoi farlo chiamando la funzione di costruzione per quel tipo. Questa funzione viene creata automaticamente da Oracle Database quando si dichiara il tipo. La funzione di costruzione costruisce un'istanza del tipo associato alla funzione. Puoi chiamare questa funzione senza argomenti oppure puoi passarle una o più espressioni dello stesso tipo degli elementi della raccolta e queste verranno inserite nella tua raccolta.
 
 N4M_DOCS := N4M_DOC_TABLE();
+
 
 ### **Popolamento delle raccolte**
 
@@ -200,6 +214,10 @@ Inoltre, da BE, sarà semplicissimo accedere alla tabella di ritorno della funct
     List<DocumentaleEntity> getDocumentale(String idObj);
 ```
 
+
+
+
+
 ## FOR LOOP
 
 Il for loop esegue una sequenza di istruzioni un numero specificato di volte.
@@ -231,6 +249,10 @@ record.nome_azienda
 L' EXIT esce incondizionatamente dall'iterazione corrente di un ciclo e trasferisce il controllo alla fine del ciclo corrente.
 
 L' EXIT WHEN esce dall'iterazione corrente di un ciclo quando la condizione nella sua WHEN clausola è vera e trasferisce il controllo alla fine del ciclo corrente.
+
+
+
+
 
 ## Eccezioni
 
@@ -289,7 +311,9 @@ PRAGMA EXCEPTION_INIT(deadlock_detected, -60);
 
 Una volta dichiarata l’eccezione, verrà usata normalmente come quelle già predefinite.
 
-### CASE WHEN
+
+
+
 
 ## Utilities
 
