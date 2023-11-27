@@ -1,0 +1,304 @@
+# Indici
+
+Un indice viene utilizzato per velocizzare la ricerca nel database, quindi migliorare i tempi di ricerca dei dati.
+
+Può essere utilizzato per trovare in modo efficiente tutte le righe corrispondenti a una colonna nella query e quindi esaminare solo quel sottoinsieme della tabella per trovare corrispondenze esatte. Se non hai indici su nessuna colonna usata nella WHERE clausola, SQLserver deve scorrere l'intera tabella e controllare ogni riga per vedere se corrisponde, il che potrebbe essere un'operazione lenta su tabelle di grandi dimensioni.
+
+**Unique or non-unique indexes**
+
+Un indice può essere univoco o non univoco. Un indice univoco garantisce che nessuna riga di una tabella abbia valori duplicati nella colonna (o nelle colonne) indicizzata. Un indice non univoco non impone questa restrizione ai valori della colonna indicizzata.
+
+**Vedere tutti gli indici all’interno di un db Oracle**
+
+(https://docs.oracle.com/cd/B19306_01/server.102/b14237/statviews_1069.htm#i1578369)
+
+SELECT * FROM USER_INDEXES;
+
+è possibile anche cercare un indice per nome o cercare gli indici di una tabella:
+
+SELECT * FROM USER_INDEXES where INDEX_NAME = 'nomeIndex';
+
+SELECT * FROM USER_INDEXES where TABLE_NAME = 'nomeTabella';
+
+Sulla tabella **USER_INDEXES** abbiamo la possibilità di prelevare diverse info sull’indice che stiamo cercando, come se è unique o meno o il tipo di indice e altre info.
+
+Se eseguo: 
+
+EXPLAIN PLAN FOR + QUERY 
+
+e, dopo, eseguo il comando:
+
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+
+Con quest’ultima select potrò andare a controllare se gli indici aggiunti alla query sono stati effettivamente utilizzati.
+
+Esempio:
+
+```sql
+EXPLAIN PLAN FOR
+
+SELECT DISTINCT va.luogo FROM V_MV_REPORT_DINAMICI va;
+
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+```
+
+## Viste vs Viste Materializzate
+
+Le viste sono una specie di tabelle virtuali; hanno anche righe e colonne come si trovano in una tabella reale nel database. 
+
+Possiamo creare una vista selezionando i campi da una o più tabelle presenti nel database. Una vista può avere tutte le righe di una tabella o righe specifiche in base a determinate condizioni.
+
+**Viste** 
+
+La vista viene creata eseguendo una SELECT. I risultati di quest’ultima non vengono salvati in nessun punto del disco; quindi, è necessario eseguire una query ogni volta che sono necessari i dati. L’espressione, invece, viene archiviata, in modo da avere dati aggiornati frequentemente.
+
+Una vista è, infatti, utile quando abbiamo bisogno di dati aggiornati, ma non vi si accede spesso.
+
+**Viste Materializzate**
+
+Una vista materializzata, invece, è un oggetto di database che contiene i risultati di una query.  La FROM clausola della query può denominare tabelle, viste e altre viste materializzate.
+
+A differenza delle viste, sia l’espressione della query che la tupla risultante vengono archiviate sul disco. Infatti, una vista materializzata è utile quando è necessario accedere frequentemente ai dati, ma nella tabella non vengono aggiornati spesso.
+
+Da ciò ne deriva che una vista materializzata ha un costo di archiviazione e aggiornamento, mentre una vista no.
+
+Può capitare che le modifiche effettuate sulle tabelle o vista sulla quale si appoggia la vista materializzata, non vengano subito prelevate da quest’ultima.
+
+ In questo caso bisogna refreshare la vista con questo comando:
+
+**CALL** DBMS_MVIEW.REFRESH('nome_schema.nome_vista_materializzata','');
+
+## Procedure vs Funzioni
+
+Mentre una procedura è un blocco PL/SQL denominato che esegue una o più azioni, una funzione è un blocco PL/SQL denominato che restituisce un valore.
+
+Le procedure possono essere create e poi richiamate da altre procedure, da blocchi anonimi, da funzioni, ovunque siano necessarie nel tuo PL/SQL.
+
+Il fatto che le procedure - e le funzioni - possano essere richiamate ripetutamente da numerosi luoghi è ciò che le rende così utili: semplifica la risoluzione dei bug poiché è sufficiente correggere un errore in un unico posto.
+
+Le funzioni, come abbiamo detto prima, devono restituire un valore. Fondamentalmente, devono rispondere a una singola, specifica domanda. Ad esempio, è possibile scrivere una funzione per trovare il numero di telefono di un amico o il sesso di un amico, ma non entrambe.
+
+Mentre una funzione restituisce sempre un valore utilizzando l'istruzione RETURN, una procedura può restituire uno o più valori tramite parametri o non restituire affatto.
+
+La particolarità di una funzione è che si, restituisce un valore, ma quel valore può essere anche una tabella.
+
+Possiamo quindi ritornare una tabella esistente o “crearne” una noi tramite **TYPE**.
+
+A cosa può essere utile avere una tabella come tipo di ritorno?
+
+Immagina ci sia l’esigenza di avere uno script che, in base all’input, esegue una logica dalla quale come output deve ottenere una lista di oggetti, che in SQL non sono altro che righe di una tabella.
+
+Esempio. In base all’oggetto che passo in input, ci sono una serie di doc che devono essere inviati, ma quali? In base alla logica nella funzione, essa salverà i doc che ci interessa inviare nella tabella creata con TYPE. Dato che la funzione ha quella tabella come ritorno, in output avremo ciò che la essa contiene.
+
+## Collezioni e Type in Oracle
+
+### **Tre tipi di collezioni**
+
+Ci sono tre tipi di collezioni tra cui scegliere, ciascuna con le proprie caratteristiche e ciascuna più adatta a una circostanza diversa:
+
+- **Matrice associativa.**
+    
+    Il primo tipo di raccolta disponibile in PL/SQL, originariamente era chiamato “tabella PL/SQL” e può essere utilizzato solo nei blocchi PL/SQL. Gli array associativi possono essere sparsi o densi e possono essere indicizzati da numeri interi o stringhe.
+    
+- **Tavolo nidificato.**
+    
+    La tabella nidificata può essere utilizzata nei blocchi PL/SQL, nelle istruzioni SQL e come tipo di dati delle colonne nelle tabelle. Le tabelle nidificate possono essere sparse ma sono quasi sempre dense. Possono essere indicizzati solo tramite numero intero. È possibile utilizzare l'operatore MULTISET per eseguire operazioni sugli insiemi ed eseguire confronti di uguaglianza su tabelle nidificate.
+    
+- **Varray.**
+    
+    Il varray (array di dimensione variabile) può essere utilizzato nei blocchi PL/SQL, nelle istruzioni SQL e come tipo di dati delle colonne nelle tabelle. I Varray sono sempre densi e indicizzati da numeri interi. Quando viene definito un tipo varray, è necessario specificare il numero massimo di elementi consentiti in una raccolta dichiarata con quel tipo.
+    
+    ### **Dichiarare tipi e variabili di raccolta**
+    
+    Prima di poter dichiarare e utilizzare una variabile di raccolta, è necessario definire il TYPE su cui è basata.
+    
+    - Se l'istruzione TYPE contiene una clausola INDEX BY, il tipo di raccolta è un array associativo.
+    - Se l'istruzione TYPE contiene la parola chiave VARRAY, il tipo di raccolta è un varray.
+    - Se l'istruzione TYPE non contiene una clausola INDEX BY o una parola chiave VARRAY, il tipo di raccolta è una tabella nidificata.
+    
+
+```sql
+CREATE OR REPLACE TYPE N4M_DOC_TYPE IS OBJECT
+
+(
+
+ID NUMBER(10),
+
+DESCR VARCHAR2(1000),
+
+TIPO VARCHAR2(1)
+
+);
+
+CREATE OR REPLACE TYPE N4M_DOC_TABLE IS TABLE OF N4M_DOC_TYPE;
+```
+
+In questo esempio stiamo andando a creare un Object descritto da tre parametri e una tabella che accetta solo il tipo Object che abbiamo creato. 
+
+Avremo quindi N4M_DOC_TABLE, che sarà una tabella di record di tipo N4M_DOC_TYPE.
+
+N4M_DOC_TABLE inizialmente non ha un’instanza, non ha memoria allocata, ma assomiglia più ad un template per un uso futuro. 
+
+Come inizializziamo e riempiamo la N4M_DOC_TABLE all’interno di una function?
+
+### **Inizializzazione delle raccolte**
+
+Quando lavori con tabelle nidificate e varray, devi *inizializzare* la variabile di raccolta prima di poterla utilizzare. Puoi farlo chiamando la funzione di costruzione per quel tipo. Questa funzione viene creata automaticamente da Oracle Database quando si dichiara il tipo. La funzione di costruzione costruisce un'istanza del tipo associato alla funzione. Puoi chiamare questa funzione senza argomenti oppure puoi passarle una o più espressioni dello stesso tipo degli elementi della raccolta e queste verranno inserite nella tua raccolta.
+
+N4M_DOCS := N4M_DOC_TABLE();
+
+### **Popolamento delle raccolte**
+
+Puoi assegnare valori agli elementi di una raccolta in vari modi:
+
+- Quando lavori con tabelle nidificate e varray, bisogna utilizzare EXTEND per allocare spazio all’interno della table e dopo di che si può inserire una riga.
+
+```sql
+create or replace FUNCTION GET_N4M_DOCUMENTALE() RETURN N4M_DOC_TABLE
+
+AS
+
+N4M_DOCS N4M_DOC_TABLE; -- DICHIARO UNA VAR DI TIPO N4M_DOC_TABLE
+
+BEGIN
+
+--INIZIALIZZO TABLE
+
+N4M_DOCS := N4M_DOC_TABLE();
+
+--ALLOCO SPAZIO ALL’INTERNO DELLA TABLE E AGGIUNGO UNA ROW
+
+N4M_DOCS.EXTEND;
+
+SELECT N4M_DOC_TYPE(12, 'Hello World', 'O') INTO N4M_DOCS(N4M_DOCS.LAST) FROM DUAL;
+
+RETURN N4M_DOCS;
+
+END;
+```
+
+- Compila una raccolta direttamente da una query con BULK COLLECT
+
+```sql
+DECLARE
+   TYPE numbers_aat IS TABLE OF NUMBER
+      INDEX BY PLS_INTEGER;
+
+   l_numbers   numbers_aat;
+BEGIN
+     SELECT employee_id
+       BULK COLLECT INTO l_numbers
+       FROM employees
+   ORDER BY last_name;
+END;
+```
+
+Inoltre, da BE, sarà semplicissimo accedere alla tabella di ritorno della function GET_N4M_DOCUMENTALE() :
+
+```java
+@Query(value = "select * from table(GET_N4M_DOCUMENTALE(?1))", nativeQuery = true)
+    List<DocumentaleEntity> getDocumentale(String idObj);
+```
+
+## FOR LOOP
+
+Il for loop esegue una sequenza di istruzioni un numero specificato di volte.
+
+```java
+FOR index IN lower_bound .. upper_bound
+LOOP 
+    statements; 
+END LOOP;
+```
+
+Oltre che un semplice ciclo for numerico, possiamo andare ad applicare il loop anche su una select e quindi su una collezione di oggetti dello stesso tipo.
+
+```java
+FOR record IN (select * from azienda)
+LOOP
+    process_record_statements;
+END LOOP;
+```
+
+La variabile ‘record’ è locale all'istruzione del cursore FOR LOOP. Significa che puoi fare riferimento solo all'interno del ciclo, non all'esterno. Al termine dell'esecuzione del loop variabile diventa indefinita.
+
+All’interno del loop, quindi, si potrà usufruire della variabile ‘record’ per accedere ai campi della collection nella seguente maniera:
+
+record.nome_azienda
+
+**EXIT and EXIT WHEN Statement**
+
+L' EXIT esce incondizionatamente dall'iterazione corrente di un ciclo e trasferisce il controllo alla fine del ciclo corrente.
+
+L' EXIT WHEN esce dall'iterazione corrente di un ciclo quando la condizione nella sua WHEN clausola è vera e trasferisce il controllo alla fine del ciclo corrente.
+
+## Eccezioni
+
+Anche in PL/SQL esiste un modo per “catturare” le eccezioni.
+
+```sql
+BEGIN
+
+--Blocco sql che può dare errore
+
+EXCEPTION WHEN eccezionePredefinita THEN
+
+Azione
+
+END;
+```
+
+Esempio:
+
+```sql
+BEGIN
+SELECT fornitore into CURRENT_FORNITORE from contratto where id = IN_ID;
+EXCEPTION WHEN NO_DATA_FOUND THEN
+ CURRENT_FORNITORE := 'NA';
+END;
+```
+
+Potremmo anche specificare più eccezioni in cascata e concludere con l’eccezione generale, che catturerà le eccezioni che non abbiamo specificato prima :
+
+```sql
+EXCEPTION WHEN eccezPredefinita THEN
+
+..azione
+
+EXCEPTION WHEN eccezPredefinita THEN
+
+..azione
+
+WHEN OTHERS THEN   -- handles all other errors
+
+..azione
+
+END;
+```
+
+1. Eccezioni predefinite, l’elenco: https://docs.oracle.com/cd/B14117_01/appdev.101/b10807/07_errs.htm
+2. Eccezioni che non hanno nomi predefiniti, vengono definite dall’utente tramite il pragma (cioè direttiva del compilatore che viene elaborata in fase di compilazione, non in fase di esecuzione) EXCEPTION_INIT, che chiede al compilatore di associare un codice errore Oracle ad un nome.
+
+Dichiarare un eccezione non predefinita:           
+
+ **PRAGMA EXCEPTION_INIT(exception_name, -Oracle_error_number);**
+
+Esempio con il codice errore ORA-00060:            
+
+PRAGMA EXCEPTION_INIT(deadlock_detected, -60);
+
+Una volta dichiarata l’eccezione, verrà usata normalmente come quelle già predefinite.
+
+### CASE WHEN
+
+## Utilities
+
+- Cercare colonna in tutte le tabelle:
+    
+    **SELECT**  c.TABLE_NAME  **FROM**  ALL_TAB_COLUMNS c **WHERE** c.COLUMN_NAME **LIKE** '%nomeColonnaCheCiInteressa%';
+    
+- Cercare un indice per nome o cercare gli indici di una tabella:
+    
+    SELECT * FROM USER_INDEXES where INDEX_NAME = 'nomeIndex';
+    
+    SELECT * FROM USER_INDEXES where TABLE_NAME = 'nomeTabella';
