@@ -52,6 +52,7 @@ Le viste sono una specie di tabelle virtuali; hanno anche righe e colonne come s
 
 Possiamo creare una vista selezionando i campi da una o più tabelle presenti nel database. Una vista può avere tutte le righe di una tabella o righe specifiche in base a determinate condizioni.
 
+
 **Viste** 
 
 La vista viene creata eseguendo una SELECT. I risultati di quest’ultima non vengono salvati in nessun punto del disco; quindi, è necessario eseguire una query ogni volta che sono necessari i dati. L’espressione, invece, viene archiviata, in modo da avere dati aggiornati frequentemente.
@@ -319,7 +320,7 @@ Una volta dichiarata l’eccezione, verrà usata normalmente come quelle già pr
 
 - Cercare colonna in tutte le tabelle:
     
-    **SELECT**  c.TABLE_NAME  **FROM**  ALL_TAB_COLUMNS c **WHERE** c.COLUMN_NAME **LIKE** '%nomeColonnaCheCiInteressa%';
+    SELECT c.TABLE_NAME FROM ALL_TAB_COLUMNS c **WHERE** c.COLUMN_NAME **LIKE** '%nomeColonnaCheCiInteressa%';
     
 - Cercare un indice per nome o cercare gli indici di una tabella:
     
